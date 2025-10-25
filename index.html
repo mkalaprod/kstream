@@ -2162,7 +2162,31 @@
     <script>
         const shows = [
             { 
-                title: 'Parasite', 
+                title: 'Le Hobbit : la bataille des cinq armées (VF)', 
+                type: 'film', 
+                genre: 'Fantasy/Aventure', 
+                videoUrl: '<iframe src="https://drive.google.com/file/d/19KNvgC3qr3ddevrLhTXQ_54YJCUx3dMG/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
+                image: 'https://beam-images.warnermediacdn.com/BEAM_LWM_DELIVERABLES/f45e8e11-6c8b-4733-9c4e-4e6046a9be19/f78778e8-a3c7-4776-bc89-dbd4ebd54a95?host=wbd-images.prod-vod.h264.io&partner=beamcom'
+            },        
+
+            { 
+                title: 'Le Hobbit: La désolation de Smaug (VF)', 
+                type: 'film', 
+                genre: 'Fantasy/Aventure', 
+                videoUrl: '<iframe src="https://drive.google.com/file/d/19KNvgC3qr3ddevrLhTXQ_54YJCUx3dMG/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
+                image: 'https://zonetechnoculturelle.ca/wp-content/uploads/2014/01/the-hobbit-the-desolation-of-smaug-22982-1920x1080.jpg'
+            },
+
+            { 
+                title: 'Le Hobbit : Un voyage inattendu (VF)', 
+                type: 'film', 
+                genre: 'Fantasy/Aventure', 
+                videoUrl: '<iframe src="https://drive.google.com/file/d/19KNvgC3qr3ddevrLhTXQ_54YJCUx3dMG/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
+                image: 'https://thenotebook14.wordpress.com/wp-content/uploads/2013/12/4f72bf4f40dfd17f650aeb062d0f778e-the-hobbit-an-unexpected-journey-1468813985.jpg'
+            },
+
+            { 
+                title: 'Parasite (VOSTFR)', 
                 type: 'film', 
                 genre: 'Thriller', 
                 videoUrl: '<iframe src="https://drive.google.com/file/d/1A5-bfcXmLQCcwF7bmyBuH7UcKvuHC60c/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
@@ -2170,7 +2194,7 @@
             },
         
             { 
-                title: 'Top Gun : Maverick', 
+                title: 'Top Gun : Maverick (VOSTFR)', 
                 type: 'film', 
                 genre: 'Action / Aventure', 
                 videoUrl: '<iframe src="https://drive.google.com/file/d/1nK2ps9Ua-Ak2xyckFryCqEnUjpmBJaNo/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
@@ -2178,7 +2202,7 @@
             },
 
             { 
-                title: 'Bleach', 
+                title: 'Bleach (VOSTFR)', 
                 type: 'série', 
                 genre: 'Shōnen', 
                 videoUrl: null, 
@@ -2186,7 +2210,7 @@
             },
 
             { 
-                title: 'Bleach: Memories of Nobody', 
+                title: 'Bleach: Memories of Nobody (VOSTFR)', 
                 type: 'film', 
                 genre: 'Shōnen', 
                 videoUrl: '<iframe width="640" height="384" src="https://video.sibnet.ru/shell.php?videoid=4844965" frameborder="0" scrolling="no" allowfullscreen></iframe>', 
@@ -2194,7 +2218,7 @@
             },
 
             {
-                title: 'Bleach: The Diamond Dust Rebellion', 
+                title: 'Bleach: The Diamond Dust Rebellion (VOSTFR)', 
                 type: 'film', 
                 genre: 'Shōnen', 
                 videoUrl: '<iframe width="640" height="384" src="https://video.sibnet.ru/shell.php?videoid=4844969" frameborder="0" scrolling="no" allowfullscreen></iframe>', 
@@ -2202,7 +2226,7 @@
             },
 
             { 
-                title: 'Bleach: Fade to Black', 
+                title: 'Bleach: Fade to Black (VOSTFR)', 
                 type: 'film', 
                 genre: 'Shōnen', 
                 videoUrl: '<iframe width="640" height="384" src="https://video.sibnet.ru/shell.php?videoid=5266682" frameborder="0" scrolling="no" allowfullscreen></iframe>', 
@@ -2210,7 +2234,7 @@
             },
 
             { 
-                title: 'Bleach: Hell Verse', 
+                title: 'Bleach: Hell Verse (VOSTFR)', 
                 type: 'film', 
                 genre: 'Shōnen', 
                 videoUrl: '<iframe width="640" height="384" src="https://video.sibnet.ru/shell.php?videoid=4844981" frameborder="0" scrolling="no" allowfullscreen></iframe>', 
@@ -2278,7 +2302,7 @@
             const seriesGrid = document.getElementById('seriesGrid');
             const filmsGrid = document.getElementById('filmsGrid');
 
-            shows.slice(0, 6).forEach(show => {
+            shows.slice(0, 1000).forEach(show => {
                 homeNewGrid.appendChild(createShowCard(show));
             });
 
