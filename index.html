@@ -344,7 +344,11 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(45deg, #0f2027, #203a43, #2c5364);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             position: relative;
+            transition: background-image 0.5s ease;
         }
 
         .hero-overlay {
@@ -1997,23 +2001,15 @@
 
             <div class="page-content active" id="page-home">
                 <div class="hero-container">
-                    <div class="hero" onclick="playContent('Hero Show')">
-                        <div class="hero-bg"></div>
+                    <div class="hero" id="heroCarousel">
+                        <div class="hero-bg" id="heroBg"></div>
                         <div class="hero-overlay"></div>
                         <div class="hero-content">
                             <div class="hero-logo">+</div>
-                            <div class="hero-title">En cours de développement</div>
-                            <div class="hero-subtitle">Nouveaux épisodes disponibles</div>
+                            <div class="hero-title" id="heroTitle">Derniers ajouts</div>
+                            <div class="hero-subtitle" id="heroSubtitle"></div>
                         </div>
-                        <div class="carousel-dots">
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
-                            <div class="dot active"></div>
-                            <div class="dot"></div>
-                            <div class="dot"></div>
+                        <div class="carousel-dots" id="carouselDots">
                         </div>
                     </div>
                 </div>
@@ -2024,7 +2020,7 @@
                 </div>
             
                 <div class="content-section">
-                    <h2 class="content-header">Nouveautés</h2>
+                    <h2 class="content-header">Catalogue</h2>
                     <div class="shows-grid" id="homeNewGrid"></div>
                 </div>
             </div>
@@ -2161,6 +2157,46 @@
 
     <script>
         const shows = [
+            { 
+                title: "Joker (VOSTFR)", 
+                type: 'film', 
+                genre: 'Thriller / Crime', 
+                videoUrl: '<iframe src="https://drive.google.com/file/d/19KNvgC3qr3ddevrLhTXQ_54YJCUx3dMG/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
+                image: 'https://beam-images.warnermediacdn.com/BEAM_LWM_DELIVERABLES/e37195fe-c232-4ba0-bb9e-c4004279b6fa/4447958e-2d4f-4367-943d-0de4aaf38a82?host=wbd-images.prod-vod.h264.io&partner=beamcom'
+            }, 
+
+            { 
+                title: "Le loup de Wall Street (VOSTFR)", 
+                type: 'film', 
+                genre: 'Thriller / Comédie', 
+                videoUrl: '<iframe src="https://drive.google.com/file/d/19KNvgC3qr3ddevrLhTXQ_54YJCUx3dMG/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
+                image: 'https://i.ytimg.com/vi/GT9UfSqBz9o/maxresdefault.jpg'
+            }, 
+
+            { 
+                title: "Deadpool 2 (VOSTFR)", 
+                type: 'film', 
+                genre: 'Action / Comédie', 
+                videoUrl: '<iframe src="https://drive.google.com/file/d/19KNvgC3qr3ddevrLhTXQ_54YJCUx3dMG/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
+                image: 'https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/068efcb7-ed68-454b-89e2-9d70928cd9cf/compose?aspectRatio=1.78&format=webp&width=1200'
+            }, 
+
+            { 
+                title: "Deadpool (VOSTFR)", 
+                type: 'film', 
+                genre: 'Action / Comédie', 
+                videoUrl: '<iframe src="https://drive.google.com/file/d/19KNvgC3qr3ddevrLhTXQ_54YJCUx3dMG/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
+                image: 'https://proxymedia.woopic.com/api/v1/images/331%2Fdeadpool%7CDEADPOOLXXXW0103647_BAN1_2424_NEWTV_HD.jpg'
+            }, 
+
+            { 
+                title: "Whiplash (VOSTFR)", 
+                type: 'film', 
+                genre: 'Drame / Thriller', 
+                videoUrl: '<iframe src="https://drive.google.com/file/d/1itq-SgrrriLZShg6Xz0abrgc1jZi4DBP/preview" width="640" height="384" style="border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>', 
+                image: 'https://www.hiersoiraparis.com/wp-content/uploads/2021/03/Whiplash.jpeg'
+            },  
+
             { 
                 title: "Le Seigneur des anneaux : Le Retour du roi (VF)", 
                 type: 'film', 
@@ -2326,12 +2362,7 @@
             const seriesGrid = document.getElementById('seriesGrid');
             const filmsGrid = document.getElementById('filmsGrid');
 
-            shows.slice(0, 1000).forEach(show => {
-                homeNewGrid.appendChild(createShowCard(show));
-            });
-
-            const remainingFilms = shows.slice(10).filter(s => s.type === 'film');
-            remainingFilms.forEach(show => {
+            shows.forEach(show => {
                 homeNewGrid.appendChild(createShowCard(show));
             });
 
@@ -2342,6 +2373,80 @@
             shows.filter(s => s.type === 'film').forEach(show => {
                 filmsGrid.appendChild(createShowCard(show));
             });
+        }
+
+        let currentCarouselIndex = 0;
+        let carouselItems = [];
+        let carouselInterval;
+
+        function initializeCarousel() {
+            carouselItems = shows.slice(0, 8);
+            const heroBg = document.getElementById('heroBg');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroSubtitle = document.getElementById('heroSubtitle');
+            const carouselDots = document.getElementById('carouselDots');
+            const heroCarousel = document.getElementById('heroCarousel');
+
+            carouselDots.innerHTML = '';
+            carouselItems.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(index));
+                carouselDots.appendChild(dot);
+            });
+
+            heroCarousel.addEventListener('click', () => {
+                if (carouselItems[currentCarouselIndex]) {
+                    if (carouselItems[currentCarouselIndex].type === 'film') {
+                        openVideoModal(carouselItems[currentCarouselIndex]);
+                    } else if (carouselItems[currentCarouselIndex].type === 'série') {
+                        openSeriesModal(carouselItems[currentCarouselIndex].title);
+                    }
+                }
+            });
+
+            heroCarousel.addEventListener('mouseenter', stopCarousel);
+            heroCarousel.addEventListener('mouseleave', startCarousel);
+
+            updateCarousel();
+            startCarousel();
+        }
+
+        function updateCarousel() {
+            if (carouselItems.length === 0) return;
+            
+            const currentItem = carouselItems[currentCarouselIndex];
+            const heroBg = document.getElementById('heroBg');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroSubtitle = document.getElementById('heroSubtitle');
+            const dots = document.querySelectorAll('.dot');
+
+            heroBg.style.backgroundImage = `url('${currentItem.image}')`;
+            heroTitle.textContent = 'Derniers ajouts';
+            heroSubtitle.textContent = currentItem.title;
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentCarouselIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentCarouselIndex = index;
+            updateCarousel();
+        }
+
+        function nextSlide() {
+            currentCarouselIndex = (currentCarouselIndex + 1) % carouselItems.length;
+            updateCarousel();
+        }
+
+        function startCarousel() {
+            carouselInterval = setInterval(nextSlide, 5000);
+        }
+
+        function stopCarousel() {
+            clearInterval(carouselInterval);
         }
 
         function createShowCard(show) {
@@ -3033,6 +3138,7 @@
         });
 
         initializeGrids();
+        initializeCarousel();
         loadWatchHistory();
 
         window.addEventListener('DOMContentLoaded', () => {
